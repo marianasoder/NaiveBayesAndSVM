@@ -50,7 +50,7 @@ class NaiveBayesClassifier:
 
         self.numSamples = sum(self.classFreq.values())
 
-        print("Done! Samples read: {0}".format(self.numSamples))
+        print("Done! Samples read: {0}\n".format(self.numSamples))
         dataFile.close()
 
     def test(self,  dataFile, outFileName):
@@ -102,7 +102,10 @@ class NaiveBayesClassifier:
                 # salva o arq de saida]
                 outFile.write(predic + " ")
                 for classe in classes:
-                    outFile.write("{0} ".format(round(prob[classe]/sum(prob.values()), 4)))
+                    if sum(prob.values()) == 0:
+                        outFile.write("0.0000 ")
+                    else:
+                        outFile.write("{0} ".format(round(prob[classe]/sum(prob.values()), 4)))
                 outFile.write('\n')
             
             print("Done!\nSamples tested: {0}\n".format(count))
@@ -134,7 +137,7 @@ class NaiveBayesClassifier:
 
     def cleanOutput(self):
         if os.path.isdir("./outputs/"):
+            print("Diretorio de saida Limpado!")
             shutil.rmtree("./outputs/")
         
-        print("Diretorio de saida Limpado!")
         os.mkdir("./outputs")

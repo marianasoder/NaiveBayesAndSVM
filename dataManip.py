@@ -1,33 +1,38 @@
 class dataManip:
-    def __init__(self, nFlds, otFil, dtFil):
+    def __init__(self, nFlds, otFil, dtFil, labelPosi, divisor):
         self.numFolds = nFlds
         self.outName = otFil
         self.outFile = "outputs/{0}_{1}_folds.txt".format(otFil, nFlds)
         self.dataFile = dtFil
+        self.labelPosi = labelPosi
+        self.divSym = divisor
 
-    def formatData(self, labelPosi):
+    def formatData(self):
         arq = open(self.dataFile, 'r')
         featList = {}
 
         # Separa as amostras por classe
         print("Reading data...")
         for line in arq:
-            features = line.split(',')
+            features = line.split(self.divSym)
             tam = len(features)-1
-            clas = features[labelPosi]
+            clas = features[self.labelPosi]
 
-            if labelPosi == tam:
+            if self.labelPosi == tam:
                 clas = clas[:-1]
 
             if clas not in featList.keys():
                 featList[clas] = []
 
+            '''
             ret = ""
             for i in range(1, tam):
                 ret += "{0},".format(features[i])
             ret += features[tam]
 
             featList[clas].append(ret)
+            '''
+            featList[clas].append(line)
         arq.close()
 
         # Divide em folds
