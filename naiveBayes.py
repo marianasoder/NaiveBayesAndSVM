@@ -1,7 +1,7 @@
-import operator
+import operator, os, shutil
 
 class NaiveBayesClassifier:
-    def __init__(self):
+    def __init__(self, separSymb, labelPosi):
         # frequencia de cada atributo de cada classe
         self.attFreq = {}
         # quantidade de amostras por classe
@@ -9,19 +9,24 @@ class NaiveBayesClassifier:
         self.numSamples = 0
         # matriz de confusao
         self.confMatrix = []
+        # simbolo de separacao
+        self.separSymb = separSymb
+        # posicao da label
+        self.labelPosi = labelPosi
+        
 
     # realiza o treino
-    def train(self,  dataFile, separSymb, labelPosi):
+    def train(self,  dataFile):
         print("Training...")
 
         dataFile = open(dataFile, 'r')
         # para todas as amostras no arquivo
         for sample in dataFile:
-            features = sample.split(separSymb)
+            features = sample.split(self.separSymb)
             tam = len(features)-1
-            clazz = features[labelPosi]
+            clazz = features[self.labelPosi]
 
-            if labelPosi == tam:
+            if self.labelPosi == tam:
                 clazz = clazz[:-1]
 
             # caso a classe nao exista nos dicionarios
@@ -48,7 +53,7 @@ class NaiveBayesClassifier:
         print("Done! Samples read: {0}".format(self.numSamples))
         dataFile.close()
 
-    def test(self,  dataFile, separSymb, outFileName, labelPosi):
+    def test(self,  dataFile, outFileName):
         if (not self.classFreq) or (not self.attFreq):
             print("Error: No training performed!")
         else:
@@ -68,11 +73,11 @@ class NaiveBayesClassifier:
             # para todas as amostras no arquivo
             for sample in dataFile:
                 count += 1
-                features = sample.split(separSymb)
+                features = sample.split(self.separSymb)
                 tam = len(features)-1
-                clazz = features[labelPosi]
+                clazz = features[self.labelPosi]
 
-                if labelPosi == tam:
+                if self.labelPosi == tam:
                     clazz = clazz[:-1]
 
                 prob = {i:1.0 for i in classes}
@@ -126,3 +131,10 @@ class NaiveBayesClassifier:
         self.numSamples = sum(self.classFreq.values())
         modelFile.close()
         print('Done!')
+
+    def cleanOutput(self):
+        if os.path.isdir("./outputs/"):
+            shutil.rmtree("./outputs/")
+        
+        print("Diretorio de saida Limpado!")
+        os.mkdir("./outputs")

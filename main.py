@@ -1,13 +1,18 @@
 from naiveBayes import *
 from dataManip import *
 
-numFolds = 4
-nomeProb = "breast_cancer"
+numFolds = 2
+nomeProb = "car"
+
 
 # arquivo com os dados crus
-data = "./dataset/breast-cancer-wisconsin.data"
+data = "./dataset/cars/car.data"
 # Classificador baseado em naive-bayes
-classifier = NaiveBayesClassifier()
+classifier = NaiveBayesClassifier(',', 6)
+
+# limpa as saidas
+classifier.cleanOutput()
+
 # classe que gera o arquivo de folds e processa os dados
 # parametros = (numFolds, nomeArqSaida, arqEntrada)
 dataMinipu = dataManip(numFolds, nomeProb, data)
@@ -19,8 +24,8 @@ dataMinipu.makeTestTrainFiles()
 
 
 for i in range(numFolds):
-    classifier.train("outputs/{0}_{1}_train.txt".format(nomeProb, i), ',', 0)
-    classifier.test("outputs/{0}_{1}_test.txt".format(nomeProb, i), ',', str(i) + "_" + nomeProb, 0)
+    classifier.train("outputs/{0}_{1}_train.txt".format(nomeProb, i))
+    classifier.saveModel(nomeProb + ".model.txt")
+    classifier.test("outputs/{0}_{1}_test.txt".format(nomeProb, i),  str(i) + "_" + nomeProb)
 
-#classifier.saveModel("adult")
 #classifier.readFromModel("adult")
