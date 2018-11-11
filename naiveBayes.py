@@ -11,15 +11,18 @@ class NaiveBayesClassifier:
         self.confMatrix = []
 
     # realiza o treino
-    def train(self,  dataFile, separSymb):
+    def train(self,  dataFile, separSymb, labelPosi):
         print("Training...")
 
         dataFile = open(dataFile, 'r')
         # para todas as amostras no arquivo
         for sample in dataFile:
             features = sample.split(separSymb)
-            clazz = features[len(features)-1][:-1]
             tam = len(features)-1
+            clazz = features[labelPosi]
+
+            if labelPosi == tam:
+                clazz = clazz[:-1]
 
             # caso a classe nao exista nos dicionarios
             if clazz not in self.attFreq.keys():
@@ -45,14 +48,14 @@ class NaiveBayesClassifier:
         print("Done! Samples read: {0}".format(self.numSamples))
         dataFile.close()
 
-    def test(self,  dataFile, separSymb, outFileName):
+    def test(self,  dataFile, separSymb, outFileName, labelPosi):
         if (not self.classFreq) or (not self.attFreq):
             print("Error: No training performed!")
         else:
             print("Testing...")
             count = 0
             dataFile = open(dataFile, 'r')
-            outFile = open("outputs/"+outFileName+".test.txt", 'w')
+            outFile = open("outputs/"+outFileName+"_stats.test.txt", 'w')
             classes = sorted(list(self.classFreq.keys()))
             self.confMatrix = {i:{i:0 for i in classes} for i in classes}
 
@@ -66,8 +69,11 @@ class NaiveBayesClassifier:
             for sample in dataFile:
                 count += 1
                 features = sample.split(separSymb)
-                clazz = features[len(features)-1][:-1]
                 tam = len(features)-1
+                clazz = features[labelPosi]
+
+                if labelPosi == tam:
+                    clazz = clazz[:-1]
 
                 prob = {i:1.0 for i in classes}
                 for classe in classes:

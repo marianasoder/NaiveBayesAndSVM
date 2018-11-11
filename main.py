@@ -13,14 +13,14 @@ classifier = NaiveBayesClassifier()
 dataMinipu = dataManip(numFolds, nomeProb, data)
 
 # processa os dados
-dataMinipu.formatData()
+dataMinipu.formatData(0)
 # Cria arquivo dos folds
 dataMinipu.makeTestTrainFiles()
 
 
 for i in range(numFolds):
-    classifier.train("outputs/{0}_{1}_train".format(nomeProb, i), ',')
-    classifier.test("outputs/{0}_{1}_test".format(nomeProb, i), ',', str(i) + "_" + nomeProb)
+    classifier.train("outputs/{0}_{1}_train.txt".format(nomeProb, i), ',', 0)
+    classifier.test("outputs/{0}_{1}_test.txt".format(nomeProb, i), ',', str(i) + "_" + nomeProb, 0)
 
 #classifier.saveModel("adult")
 #classifier.readFromModel("adult")
