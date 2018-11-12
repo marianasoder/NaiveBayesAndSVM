@@ -47,7 +47,7 @@ class dataManip:
                     saida.write("{0} {1}".format(i, element))
                 i += 1
         saida.close()
-        print("Done!")
+        print("Done!\n")
 
     def __kFoldsGen(self, vector):
         return [vector[i::self.numFolds] for i in range(self.numFolds)]
@@ -72,4 +72,4 @@ class dataManip:
             filesTest[i].close()
             filesTrain[i].close()
 
-        print("Done!")
+        print("Done!\n")

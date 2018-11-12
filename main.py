@@ -10,12 +10,13 @@ class Teste:
 
 testes = [
     Teste("./dataset/cars/car.data", "car", 6, ','),
-    Teste("./dataset/mushroom/agaricus-lepiota.data", "mushroom", 0, ",")
+    Teste("./dataset/mushroom/agaricus-lepiota.data", "mushroom", 0, ","),
+    Teste("./dataset/nursery/nursery.data", "nursery", 8, ',')
 ]
 
 # Variaveis
 numFolds = 10
-tstAtl = 0
+tstAtl = 1
 
 # Classificador baseado em naive-bayes
 classifier = NaiveBayesClassifier(testes[tstAtl].separador, 

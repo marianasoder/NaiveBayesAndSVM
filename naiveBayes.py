@@ -55,7 +55,7 @@ class NaiveBayesClassifier:
 
     def test(self,  dataFile, outFileName):
         if (not self.classFreq) or (not self.attFreq):
-            print("Error: No training performed!")
+            print("Error: No training performed!\n")
         else:
             print("Testing...")
             count = 0
@@ -105,15 +105,11 @@ class NaiveBayesClassifier:
                     if sum(prob.values()) == 0:
                         outFile.write("0.0000 ")
                     else:
-                        outFile.write("{0} ".format(round(prob[classe]/sum(prob.values()), 4)))
+                        outFile.write("%0.4f " % (round(prob[classe]/sum(prob.values()), 4)))
                 outFile.write('\n')
             
             print("Done!\nSamples tested: {0}\n".format(count))
-            print(self.confMatrix)
-            som = 0
-            for classe in self.confMatrix.keys():
-                som += self.confMatrix[classe][classe]
-            print("Acuracia: " + str(som/count) )
+            return self.confMatrix
 
 
     # salva os dois dicionarios em um arquivo
@@ -123,7 +119,7 @@ class NaiveBayesClassifier:
         outFile.write("{0}\n".format(self.classFreq))
         outFile.write("{0}\n".format(self.attFreq))
         outFile.close()
-        print("Done! Model saved in 'outputs/"+fileName+".model.txt'")
+        print("Done! Model saved in 'outputs/"+fileName+".model.txt'\n")
 
     # le os dois dicionarios do arquivo
     def readFromModel(self, fileName):
@@ -133,11 +129,11 @@ class NaiveBayesClassifier:
         self.attFreq = eval(modelFile.readline())
         self.numSamples = sum(self.classFreq.values())
         modelFile.close()
-        print('Done!')
+        print('Done!\n')
 
     def cleanOutput(self):
         if os.path.isdir("./outputs/"):
-            print("Diretorio de saida Limpado!")
+            print("Diretorio de saida Limpado!\n")
             shutil.rmtree("./outputs/")
         
         os.mkdir("./outputs")
