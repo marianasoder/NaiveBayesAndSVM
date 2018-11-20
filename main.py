@@ -1,5 +1,6 @@
 from naiveBayes import *
 from dataManip import *
+from svm import *
 
 class Teste:
     def __init__(self, data, nomeProb, labelPosi, div):
@@ -11,16 +12,21 @@ class Teste:
 testes = [
     Teste("./dataset/cars/car.data", "car", 6, ','),
     Teste("./dataset/mushroom/agaricus-lepiota.data", "mushroom", 0, ","),
-    Teste("./dataset/nursery/nursery.data", "nursery", 8, ',')
+    Teste("./dataset/nursery/nursery2.data", "nursery", 8, ',')
 ]
 
 # Variaveis
 numFolds = 10
-tstAtl = 1
+tstAtl = 2
 
+#testeSVM
+svm(testes[tstAtl])
+
+'''
 # Classificador baseado em naive-bayes
 classifier = NaiveBayesClassifier(testes[tstAtl].separador, 
                                   testes[tstAtl].labelPosi)
+
 
 # limpa as saidas
 classifier.cleanOutput()
@@ -45,3 +51,4 @@ for i in range(numFolds):
     classifier.test("outputs/{0}_{1}_test.txt".format(testes[tstAtl].nomeProb, i),  str(i) + "_" + testes[tstAtl].nomeProb)
 
 #classifier.readFromModel("adult")
+'''
