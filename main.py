@@ -2,6 +2,31 @@ from naiveBayes import *
 from dataManip import *
 from svm import *
 
+from sklearn.metrics import confusion_matrix, classification_report
+
+def printAnalysis(labels, preds, name):
+    print("\n=================== RESULTADO "+name+" ===================")
+    print(classification_report(labels, preds))
+    confMat = confusion_matrix(labels, preds)
+    tam = len(confMat)
+    acertos = sum([confMat[i][i] for i in range(tam)])
+    acuracia = acertos / sum([confMat[i][j] for i in range(tam) for j in range(tam)])
+    print("Accuracy = {0}\n".format(acuracia))
+    print(confMat)
+
+def Analysis(matConfs):
+    labels = []
+    preds = []
+
+    for matConf in matConfs:
+        for label in matConf.keys():
+            for pred in matConf[label].keys():
+                count = matConf[label][pred]
+                labels.extend([label for i in range(count)])
+                preds.extend([pred for i in range(count)])
+
+    printAnalysis(labels, preds, "NAIVE-BAYES")    
+
 class Teste:
     def __init__(self, data, nomeProb, labelPosi, div):
         self.data      = data 
@@ -19,10 +44,10 @@ testes = [
 numFolds = 10
 tstAtl = 2
 
-#testeSVM
-svm(testes[tstAtl])
+# Classificador baseado em naive-bayes
+predSvm, labelsSvm = svm(testes[tstAtl])
+printAnalysis(predSvm, labelsSvm, "SVM")  
 
-'''
 # Classificador baseado em naive-bayes
 classifier = NaiveBayesClassifier(testes[tstAtl].separador, 
                                   testes[tstAtl].labelPosi)
@@ -44,11 +69,13 @@ dataMinipu.formatData()
 # Cria arquivo dos folds
 dataMinipu.makeTestTrainFiles()
 
-
+matConfs = []
 for i in range(numFolds):
     classifier.train("outputs/{0}_{1}_train.txt".format(testes[tstAtl].nomeProb, i))
     classifier.saveModel("{0}_{1}.model.txt".format(testes[tstAtl].nomeProb,i))
-    classifier.test("outputs/{0}_{1}_test.txt".format(testes[tstAtl].nomeProb, i),  str(i) + "_" + testes[tstAtl].nomeProb)
+    matConfs.append(
+        classifier.test("outputs/{0}_{1}_test.txt".format(testes[tstAtl].nomeProb, i),  str(i) + "_" + testes[tstAtl].nomeProb)
+    )
 
+Analysis(matConfs)
 #classifier.readFromModel("adult")
-'''

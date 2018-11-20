@@ -28,7 +28,7 @@ def svm(vetDados):
     for j in range(len(datas)):
         ftrs.append({i:datas[j][i] for i in range(tam)})
 
-    print(len(labels))
+    #print(len(labels))
 
     vectorizer = DictVectorizer()
     features = vectorizer.fit_transform(ftrs)
@@ -39,8 +39,7 @@ def svm(vetDados):
     #validação cruzada
     pred = cross_val_predict(clf, features, labels, cv=10)
 
-    print(classification_report(labels, pred))
-    print(confusion_matrix(labels, pred))
+    return labels, pred
 
 
 

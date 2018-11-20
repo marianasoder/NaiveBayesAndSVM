@@ -17,7 +17,7 @@ class NaiveBayesClassifier:
 
     # realiza o treino
     def train(self,  dataFile):
-        print("Training...")
+        #print("Training...")
 
         dataFile = open(dataFile, 'r')
         # para todas as amostras no arquivo
@@ -50,14 +50,14 @@ class NaiveBayesClassifier:
 
         self.numSamples = sum(self.classFreq.values())
 
-        print("Done! Samples read: {0}\n".format(self.numSamples))
+        #print("Done! Samples read: {0}\n".format(self.numSamples))
         dataFile.close()
 
     def test(self,  dataFile, outFileName):
         if (not self.classFreq) or (not self.attFreq):
             print("Error: No training performed!\n")
         else:
-            print("Testing...")
+            #print("Testing...")
             count = 0
             dataFile = open(dataFile, 'r')
             outFile = open("outputs/"+outFileName+"_stats.test.txt", 'w')
@@ -108,32 +108,32 @@ class NaiveBayesClassifier:
                         outFile.write("%0.4f " % (round(prob[classe]/sum(prob.values()), 4)))
                 outFile.write('\n')
             
-            print("Done!\nSamples tested: {0}\n".format(count))
+            #print("Done!\nSamples tested: {0}\n".format(count))
             return self.confMatrix
 
 
     # salva os dois dicionarios em um arquivo
     def saveModel(self, fileName):
-        print("Saving model to file...")
+        #print("Saving model to file...")
         outFile = open("outputs/"+fileName+".model.txt", 'w')
         outFile.write("{0}\n".format(self.classFreq))
         outFile.write("{0}\n".format(self.attFreq))
         outFile.close()
-        print("Done! Model saved in 'outputs/"+fileName+".model.txt'\n")
+        #print("Done! Model saved in 'outputs/"+fileName+".model.txt'\n")
 
     # le os dois dicionarios do arquivo
     def readFromModel(self, fileName):
-        print("Reading Model from file: 'outputs/"+fileName+".model.txt'")
+        #print("Reading Model from file: 'outputs/"+fileName+".model.txt'")
         modelFile = open("outputs/"+fileName+".model.txt", 'r')
         self.classFreq = eval(modelFile.readline())
         self.attFreq = eval(modelFile.readline())
         self.numSamples = sum(self.classFreq.values())
         modelFile.close()
-        print('Done!\n')
+        #print('Done!\n')
 
     def cleanOutput(self):
         if os.path.isdir("./outputs/"):
-            print("Diretorio de saida Limpado!\n")
+            #print("Diretorio de saida Limpado!\n")
             shutil.rmtree("./outputs/")
         
         os.mkdir("./outputs")
