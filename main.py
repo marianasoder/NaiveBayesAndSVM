@@ -1,12 +1,13 @@
 from naiveBayes import *
 from dataManip import *
 from svm import *
+import sys
 
 from sklearn.metrics import confusion_matrix, classification_report
 
 def printAnalysis(labels, preds, name):
     print("\n=================== RESULTADO "+name+" ===================")
-    print(classification_report(labels, preds))
+    print(classification_report(labels, preds, digits=4))
     confMat = confusion_matrix(labels, preds)
     tam = len(confMat)
     acertos = sum([confMat[i][i] for i in range(tam)])
@@ -42,9 +43,13 @@ testes = [
 
 # Variaveis
 numFolds = 10
-tstAtl = 2
 
-# Classificador baseado em naive-bayes
+if len(sys.argv) < 2:
+    tstAtl = 2
+else:
+    tstAtl = int(sys.argv[1])
+
+# Classificador baseado em svm
 predSvm, labelsSvm = svm(testes[tstAtl])
 printAnalysis(predSvm, labelsSvm, "SVM")  
 
